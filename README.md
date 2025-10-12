@@ -1,4 +1,4 @@
-# jRodent
+# ![Rodent Logo](res/icon/Rodent_48.png) jRodent
 
 A modern, native, [Gopher](https://gopher.floodgap.com/gopher/gw?a=gopher%3A%2F%2Fgopher.floodgap.com%2F1%2Fgopher)
 client for new and old computers.
