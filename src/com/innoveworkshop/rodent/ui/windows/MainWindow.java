@@ -1,18 +1,30 @@
 package com.innoveworkshop.rodent.ui.windows;
 
+import com.innoveworkshop.rodent.models.Item;
+import com.innoveworkshop.rodent.ui.components.GopherItemCellRenderer;
 import com.innoveworkshop.rodent.utils.ResourceManager;
 import sun.nio.ch.sctp.PeerAddrChange;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
+/**
+ * Application's main browser window.
+ *
+ * @author Nathan Campos {@literal nathan@innoveworkshop.com}
+ */
 public class MainWindow extends JFrame {
+	private JList list;
+	private ArrayList<Item> items;
+
 	/**
 	 * Creates the main window of our application.
 	 */
 	public MainWindow() {
 		super();
+		items = new ArrayList<Item>();
 		setupComponents();
 	}
 
@@ -31,6 +43,21 @@ public class MainWindow extends JFrame {
 		setSize(600, 800);
 		setJMenuBar(setupMenuBar());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		pack();
+
+		// Create sample data for now.
+		populateSample();
+
+		// Setup main list of the browser.
+		GopherItemCellRenderer renderer = new GopherItemCellRenderer();
+		list = new JList(items.toArray());
+		list.setCellRenderer(renderer);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		// Setup JScrollPane for our browser's list.
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.getViewport().add(list);
+		getContentPane().add(scrollPane, BorderLayout.CENTER);
 		pack();
 	}
 
@@ -72,5 +99,11 @@ public class MainWindow extends JFrame {
 		} catch (FileNotFoundException e) {
 			System.out.println("WARNING: Failed to load application icon");
 		}
+	}
+
+	private void populateSample() {
+		items.add(new Item('i', "Hello world!"));
+		items.add(new Item('0', "Another example"));
+		items.add(new Item('1', "It works!"));
 	}
 }
