@@ -1,5 +1,7 @@
 package com.innoveworkshop.rodent.models;
 
+import javax.swing.*;
+
 /**
  * Abstraction of a Gopher menu item.
  *
@@ -62,6 +64,15 @@ public class Item {
 	 */
 	public Item(char type, String name) {
 		this(type, name, null);
+	}
+
+	/**
+	 * Gets the {@link ImageIcon} related to type of the item.
+	 *
+	 * @return Icon related to the type of item.
+	 */
+	public ImageIcon getImageIcon() {
+		return ItemType.getImageIcon(type);
 	}
 
 	public char getType() {
