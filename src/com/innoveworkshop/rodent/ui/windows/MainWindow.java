@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class MainWindow extends JFrame {
 	private JList list;
-	private ArrayList<Item> items;
+	private final ArrayList<Item> items;
 
 	/**
 	 * Creates the main window of our application.

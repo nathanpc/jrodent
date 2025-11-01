@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
-public class GopherItemCellRenderer extends JPanel implements ListCellRenderer {
+public class GopherItemCellRenderer extends JPanel implements ListCellRenderer<Item> {
 	private JLabel lblType;
 	private JLabel lblName;
 
@@ -39,16 +39,8 @@ public class GopherItemCellRenderer extends JPanel implements ListCellRenderer {
 		add(lblName);
 	}
 
-	public Component getListCellRendererComponent(JList list, Object value, int index,
+	public Component getListCellRendererComponent(JList list, Item item, int index,
 	                                              boolean isSelected, boolean cellHasFocus) {
-		Item item;
-		if (value instanceof Item) {
-			item = (Item)value;
-		} else {
-			System.out.println("ERROR: CellRenderer value passed not an instance of Item");
-			return null;
-		}
-
 		if (false) {
 			Font font = lblName.getFont();
 			Map attr = font.getAttributes();
