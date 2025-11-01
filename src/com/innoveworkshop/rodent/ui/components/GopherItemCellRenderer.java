@@ -41,12 +41,15 @@ public class GopherItemCellRenderer extends JPanel implements ListCellRenderer<I
 
 	public Component getListCellRendererComponent(JList list, Item item, int index,
 	                                              boolean isSelected, boolean cellHasFocus) {
-		if (false) {
-			Font font = lblName.getFont();
-			Map attr = font.getAttributes();
+		// Show an underlined font for clickable items when hovering over them.
+		Font font = lblName.getFont();
+		Map attr = font.getAttributes();
+		if (cellHasFocus && item.isClickable()) {
 			attr.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-			lblName.setFont(font.deriveFont(attr));
+		} else {
+			attr.put(TextAttribute.UNDERLINE, null);
 		}
+		lblName.setFont(font.deriveFont(attr));
 
 		// Set background and foreground colors.
 		setBackground(isSelected ? list.getSelectionBackground() :

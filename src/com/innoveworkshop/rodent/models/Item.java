@@ -75,6 +75,16 @@ public class Item {
 		return ItemType.getImageIcon(type);
 	}
 
+	/**
+	 * Checks if the item type accepts being clicked to navigate to it.
+	 *
+	 * @return {@code true} if the item type is something that the user can
+	 *         navigate to, {@code false} otherwise.
+	 */
+	public boolean isClickable() {
+		return (type != ItemType.INFO) && (type != ItemType.ERROR);
+	}
+
 	public char getType() {
 		return type;
 	}
