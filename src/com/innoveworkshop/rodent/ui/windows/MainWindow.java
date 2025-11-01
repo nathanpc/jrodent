@@ -1,7 +1,6 @@
 package com.innoveworkshop.rodent.ui.windows;
 
-import com.innoveworkshop.rodent.models.Item;
-import com.innoveworkshop.rodent.ui.components.GopherItemCellRenderer;
+import com.innoveworkshop.rodent.ui.components.Browser;
 import com.innoveworkshop.rodent.utils.ResourceManager;
 
 import javax.swing.*;
@@ -9,7 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 /**
  * Application's main browser window.
@@ -19,15 +17,13 @@ import java.util.ArrayList;
 public class MainWindow extends JFrame implements ActionListener {
 	private JToolBar toolbar;
 	private JTextField addressBar;
-	private JList list;
-	private final ArrayList<Item> items;
+	private Browser browser;
 
 	/**
 	 * Creates the main window of our application.
 	 */
 	public MainWindow() {
 		super();
-		items = new ArrayList<Item>();
 		setupComponents();
 	}
 
@@ -48,9 +44,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 
-		// Create sample data for now.
-		populateSample();
-
 		// Set up the application's toolbar.
 		toolbar = new JToolBar("Navigation");
 		toolbar.setFloatable(false);
@@ -58,15 +51,10 @@ public class MainWindow extends JFrame implements ActionListener {
 		setupToolbar();
 		add(toolbar, BorderLayout.PAGE_START);
 
-		// Set up main list of the browser.
-		GopherItemCellRenderer renderer = new GopherItemCellRenderer();
-		list = new JList(items.toArray());
-		list.setCellRenderer(renderer);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		// Set up JScrollPane for our browser's list.
+		// Set up browser and JScrollPane for it.
+		browser = new Browser("Example");
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.getViewport().add(list);
+		scrollPane.getViewport().add(browser);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 		pack();
 	}
@@ -157,7 +145,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Handles actions that are performed inside the browser context.
+	 * Handles actions that are performed inside the window's context.
 	 *
 	 * @param e Action event to be handled.
 	 */
@@ -179,11 +167,5 @@ public class MainWindow extends JFrame implements ActionListener {
 		} catch (FileNotFoundException e) {
 			System.out.println("WARNING: Failed to load application icon");
 		}
-	}
-
-	private void populateSample() {
-		items.add(new Item('i', "Hello world!"));
-		items.add(new Item('0', "Another example"));
-		items.add(new Item('1', "It works!"));
 	}
 }
