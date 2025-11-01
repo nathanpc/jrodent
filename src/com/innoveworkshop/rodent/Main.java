@@ -50,7 +50,7 @@ public class Main {
 
 		try {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
-			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Bolota");
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Rodent");
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (UnsupportedLookAndFeelException e) {
 			Log.log(Level.WARNING, "Failed to set system look and feel: " + e);
