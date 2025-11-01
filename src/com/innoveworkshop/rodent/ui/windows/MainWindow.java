@@ -3,10 +3,11 @@ package com.innoveworkshop.rodent.ui.windows;
 import com.innoveworkshop.rodent.models.Item;
 import com.innoveworkshop.rodent.ui.components.GopherItemCellRenderer;
 import com.innoveworkshop.rodent.utils.ResourceManager;
-import sun.nio.ch.sctp.PeerAddrChange;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -15,7 +16,9 @@ import java.util.ArrayList;
  *
  * @author Nathan Campos {@literal nathan@innoveworkshop.com}
  */
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements ActionListener {
+	private JToolBar toolbar;
+	private JTextField addressBar;
 	private JList list;
 	private final ArrayList<Item> items;
 
@@ -48,13 +51,20 @@ public class MainWindow extends JFrame {
 		// Create sample data for now.
 		populateSample();
 
-		// Setup main list of the browser.
+		// Set up the application's toolbar.
+		toolbar = new JToolBar("Navigation");
+		toolbar.setFloatable(false);
+		toolbar.setRollover(true);
+		setupToolbar();
+		add(toolbar, BorderLayout.PAGE_START);
+
+		// Set up main list of the browser.
 		GopherItemCellRenderer renderer = new GopherItemCellRenderer();
 		list = new JList(items.toArray());
 		list.setCellRenderer(renderer);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		// Setup JScrollPane for our browser's list.
+		// Set up JScrollPane for our browser's list.
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.getViewport().add(list);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -82,6 +92,76 @@ public class MainWindow extends JFrame {
 		mb.add(menu);
 
 		return mb;
+	}
+
+	/**
+	 * Sets up the application's main {@link JToolBar} with navigation buttons
+	 * and an address bar.
+	 */
+	private void setupToolbar() {
+		// Add navigation buttons.
+		toolbar.add(createToolbarButton("Back", "arrow_left_blue"));
+		toolbar.add(createToolbarButton("Forward", "arrow_right_blue"));
+		toolbar.add(createToolbarButton("Parent", "arrow_up_blue"));
+		toolbar.add(createToolbarButton("Refresh", "refresh"));
+		toolbar.addSeparator();
+
+		// Add address bar and Go button.
+		addressBar = new JTextField("gopher://gopher.floodgap.com:70/1/overbite");
+		toolbar.add(addressBar);
+		toolbar.add(createToolbarButton("Go", "media_play_green"));
+	}
+
+	/**
+	 * Creates a {@link JButton} that's ready to be used in the application's
+	 * {@link JToolBar}.
+	 *
+	 * @param tooltip       Label to show when hovering over the button.
+	 * @param actionCommand Action command string to be triggered when clicked.
+	 * @param iconName      Name of the icon used for the button.
+	 *
+	 * @return Button ready to be used in the application's toolbar.
+	 */
+	private JButton createToolbarButton(String tooltip, String actionCommand, String iconName) {
+		JButton button = new JButton();
+
+		// Populate common properties.
+		button.setActionCommand(actionCommand);
+		button.setToolTipText(tooltip);
+		button.addActionListener(this);
+
+		// Set the icon.
+		try {
+			button.setIcon(ResourceManager.getResourceIcon("ui_icons/" + iconName + ".png"));
+		} catch (FileNotFoundException e) {
+			System.err.println("ERROR: Failed to get " + tooltip + " button icon (" +
+					iconName + ").");
+		}
+
+		return button;
+	}
+
+	/**
+	 * Creates a {@link JButton} that's ready to be used in the application's
+	 * {@link JToolBar}. This version automatically associates an Action
+	 * Command based on the provided tooltip.
+	 *
+	 * @param tooltip  Label to show when hovering over the button.
+	 * @param iconName Name of the icon used for the button.
+	 *
+	 * @return Button ready to be used in the application's toolbar.
+	 */
+	private JButton createToolbarButton(String tooltip, String iconName) {
+		String actionCommand = tooltip.toLowerCase().replace(' ', '-');
+		return createToolbarButton(tooltip, actionCommand, iconName);
+	}
+
+	/**
+	 * Handles actions that are performed inside the browser context.
+	 *
+	 * @param e Action event to be handled.
+	 */
+	public void actionPerformed(ActionEvent e) {
 	}
 
 	/**
