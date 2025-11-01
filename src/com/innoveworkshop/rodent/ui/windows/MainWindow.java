@@ -40,7 +40,7 @@ public class MainWindow extends JFrame {
 		setLayout(topLayout);
 
 		// Sets the properties for the frame itself.
-		setSize(600, 800);
+		setPreferredSize(new Dimension(650, 500));
 		setJMenuBar(setupMenuBar());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
