@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Application's main browser window.
@@ -25,6 +28,15 @@ public class MainWindow extends JFrame implements ActionListener {
 	public MainWindow() {
 		super();
 		setupComponents();
+
+		// Navigate to a sample gopherhole.
+		try {
+			browser.navigateTo(new URI("gopher://gopher.floodgap.com:70/1/overbite"));
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**

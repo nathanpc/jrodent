@@ -1,10 +1,13 @@
 package com.innoveworkshop.rodent.ui.components;
 
 import com.innoveworkshop.rodent.models.Item;
+import com.innoveworkshop.rodent.utils.GopherConnection;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +17,7 @@ import java.util.ArrayList;
  */
 public class Browser extends JList implements ActionListener {
 	private String title;
-	private final ArrayList<Item> items;
+	private ArrayList<Item> items;
 
 	/**
 	 * Initializes a generic browser instance with a title.
@@ -30,9 +33,21 @@ public class Browser extends JList implements ActionListener {
 		GopherItemCellRenderer renderer = new GopherItemCellRenderer();
 		setCellRenderer(renderer);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	}
 
-		// Give ourselves some sample data.
-		populateSample();
+	/**
+	 * Navigates this browser to the specified URL.
+	 *
+	 * @param uri URL of the Gopher resource.
+	 *
+	 * @throws IOException if any error occurs with the server connection.
+	 */
+	public void navigateTo(URI uri) throws IOException {
+		// Connect to the server and fetch the listing.
+		GopherConnection conn = new GopherConnection(uri);
+		items = conn.fetchItemListing();
+
+		// Populate our list with the returned results.
 		setListData(items.toArray());
 	}
 
@@ -42,11 +57,5 @@ public class Browser extends JList implements ActionListener {
 	 * @param e Action event to be handled.
 	 */
 	public void actionPerformed(ActionEvent e) {
-	}
-
-	private void populateSample() {
-		items.add(new Item('i', "Hello world!"));
-		items.add(new Item('0', "Another example"));
-		items.add(new Item('1', "It works!"));
 	}
 }

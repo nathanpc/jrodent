@@ -1,6 +1,9 @@
 package com.innoveworkshop.rodent.models;
 
+import com.innoveworkshop.rodent.exceptions.MalformedGopherLineException;
+
 import javax.swing.*;
+import java.net.URI;
 
 /**
  * Abstraction of a Gopher menu item.
@@ -64,6 +67,38 @@ public class Item {
 	 */
 	public Item(char type, String name) {
 		this(type, name, null);
+	}
+
+	/**
+	 * Constructs an {@link Item} from a line returned from a server.
+	 *
+	 * @param requestURI Request URI that originated this line.
+	 * @param line       Entry item line from a server listing.
+	 *
+	 * @return Item representing the line from the server.
+	 *
+	 * @throws MalformedGopherLineException if the line is malformed and failed to parse.
+	 */
+	public static Item fromLine(URI requestURI, String line) throws MalformedGopherLineException {
+		// Split the line into it's tab-separated parts.
+		String[] parts = line.split("\t");
+
+		// Construct an item with defaults depending on the length of its parts.
+		switch (parts.length) {
+			case 4:
+				return new Item(parts[0].charAt(0), parts[0].substring(1),
+						parts[1], parts[2], Integer.parseInt(parts[3]));
+			case 3:
+				return new Item(parts[0].charAt(0), parts[0].substring(1),
+						parts[1], parts[2]);
+			case 2:
+				return new Item(parts[0].charAt(0), parts[0].substring(1),
+						parts[1], requestURI.getHost(), requestURI.getPort());
+			case 1:
+				return new Item(parts[0].charAt(0), parts[0].substring(1));
+			default:
+				throw new MalformedGopherLineException(line);
+		}
 	}
 
 	/**
